@@ -1,47 +1,82 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import StarBorder from '@mui/icons-material/StarBorder';
+import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { TreeView } from '@mui/x-tree-view/TreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import { getTree } from "services/ApiTestVmarmysh";
+import {getTree} from '../services/ApiTestVmarmysh'
 
-console.log(getTree('GUID'));
+// const data1 = {
+//   id: 'root',
+//   name: 'Parent',
+//   children: [
+//     {
+//       id: '1',
+//       name: 'Child - 1',
+//     },
+//     {
+//       id: '3',
+//       name: 'Child - 3',
+//       children: [
+//         {
+//           id: '4',
+//           name: 'Child - 4',
+//         },
+//       ],
+//     },
+//   ],
+// };
 
-export const App = () => {
-  const [open, setOpen] = React.useState(true);
 
-  const handleClick = () => {
-    setOpen(!open);
-    getTree('GUID')
+
+// getData();
+
+// console.log('object :>> ', getData());
+// console.log('object1 :>> ', data);
+
+export default function App() {
+  const [items, setItems] = useState({});
+
+  const getData = async () => {
+    try {
+      const data = await getTree('GUID');
+      setItems({...data});
+      // setItems(items => ({
+      //   ...items,
+      //   ...data
+      // }));
+      // console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  return (
-    <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-    >
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-        {open ? <KeyboardArrowRightIcon /> : <ExpandMore />}
-        </ListItemIcon>
-        <ListItemText primary="GUID" />
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
-          </ListItemButton>
-        </List>
-      </Collapse>
-    </List>
+  useEffect(() => {
+    getData()
+  }, []);
+
+  console.log('data :>> ', items);
+
+  const renderTree = (nodes) => (
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+      {Array.isArray(nodes.children)
+        ? nodes.children.map((node) => renderTree(node))
+        : null}
+    </TreeItem>
   );
-};
+
+  return (
+    <Box sx={{ minHeight: 110, flexGrow: 1, maxWidth: 300 }}>
+      <TreeView
+        aria-label="rich object"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpanded={['root']}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        {renderTree(items)}
+      </TreeView>
+    </Box>
+  );
+}

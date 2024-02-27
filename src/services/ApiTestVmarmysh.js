@@ -11,8 +11,13 @@ export const getTree = async (value) => {
       // ]
 
   });
-  const response = await axios.post(`/api.user.tree.get?${queryParams}`);
-  return response.data;
+
+  try {
+    const response = await axios.post(`/api.user.tree.get?${queryParams}`)
+    return response.data
+  } catch (err) {
+    console.error(err.toJSON())
+  }
 };
 
 // export const addTreeNode = async (value) => {
