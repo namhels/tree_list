@@ -6,7 +6,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import {getTree} from '../services/ApiTestVmarmysh'
+import { getTree } from '../services/ApiTestVmarmysh';
+import { Button, ButtonGroup } from '@mui/material';
 
 // const data1 = {
 //   id: 'root',
@@ -29,8 +30,6 @@ import {getTree} from '../services/ApiTestVmarmysh'
 //   ],
 // };
 
-
-
 // getData();
 
 // console.log('object :>> ', getData());
@@ -45,7 +44,7 @@ export default function App() {
       // setItems({...data});
       setItems(prev => ({
         ...prev,
-        ...data
+        ...data,
       }));
       // console.log(data);
     } catch (error) {
@@ -54,16 +53,28 @@ export default function App() {
   };
 
   useEffect(() => {
-    getData()
+    getData();
   }, []);
 
   console.log('data :>> ', items);
 
-  const renderTree = (nodes) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id?.toString()} label={nodes.name}>
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node) => renderTree(node))
-        : null}
+  const renderTree = nodes => (
+    <TreeItem
+      key={nodes.id}
+      nodeId={nodes.id?.toString()}
+      label={nodes.name}
+      sx={{ fontSize: '2rem' }}
+    >
+      {/* <Stack direction="row" spacing={2}> */}
+        {Array.isArray(nodes.children)
+          ? nodes.children.map(node => renderTree(node))
+          : null}
+        <ButtonGroup variant="contained" aria-label="Basic button group">
+          <Button>One</Button>
+          <Button>Two</Button>
+          <Button>Three</Button>
+        </ButtonGroup>
+      {/* </Stack> */}
     </TreeItem>
   );
 
@@ -74,6 +85,7 @@ export default function App() {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={[items.name]}
         defaultExpandIcon={<ChevronRightIcon />}
+        sx={{ fontSize: '2rem', flexDirection: 'row' }}
       >
         {renderTree(items)}
       </TreeView>
