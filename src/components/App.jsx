@@ -42,11 +42,11 @@ export default function App() {
   const getData = async () => {
     try {
       const data = await getTree('GUID');
-      setItems({...data});
-      // setItems(items => ({
-      //   ...items,
-      //   ...data
-      // }));
+      // setItems({...data});
+      setItems(prev => ({
+        ...prev,
+        ...data
+      }));
       // console.log(data);
     } catch (error) {
       console.log(error.message);
@@ -60,7 +60,7 @@ export default function App() {
   console.log('data :>> ', items);
 
   const renderTree = (nodes) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+    <TreeItem key={nodes.id} nodeId={nodes.id?.toString()} label={nodes.name}>
       {Array.isArray(nodes.children)
         ? nodes.children.map((node) => renderTree(node))
         : null}
@@ -72,7 +72,7 @@ export default function App() {
       <TreeView
         aria-label="rich object"
         defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpanded={['root']}
+        defaultExpanded={[items.name]}
         defaultExpandIcon={<ChevronRightIcon />}
       >
         {renderTree(items)}
