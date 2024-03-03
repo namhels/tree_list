@@ -7,7 +7,7 @@ import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import { getTree } from '../services/ApiTestVmarmysh';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Typography } from '@mui/material';
 
 // const data1 = {
 //   id: 'root',
@@ -62,19 +62,37 @@ export default function App() {
     <TreeItem
       key={nodes.id}
       nodeId={nodes.id?.toString()}
-      label={nodes.name}
+      // label={nodes.name}
+      label={
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{ marginRight: '16px', fontWeight: 'inherit', fontSize: '2rem' }}
+          >
+            {nodes.name}
+          </Typography>
+          <ButtonGroup variant="contained" aria-label="Basic button group">
+            <Button>One</Button>
+            <Button>Two</Button>
+            <Button>Three</Button>
+          </ButtonGroup>
+        </Box>
+      }
       sx={{ fontSize: '2rem' }}
     >
-      {/* <Stack direction="row" spacing={2}> */}
-        {Array.isArray(nodes.children)
-          ? nodes.children.map(node => renderTree(node))
-          : null}
-        <ButtonGroup variant="contained" aria-label="Basic button group">
+      {/* <ButtonGroup variant="contained" aria-label="Basic button group">
           <Button>One</Button>
           <Button>Two</Button>
           <Button>Three</Button>
-        </ButtonGroup>
-      {/* </Stack> */}
+        </ButtonGroup> */}
+      {Array.isArray(nodes.children)
+        ? nodes.children.map(node => renderTree(node))
+        : null}
     </TreeItem>
   );
 
