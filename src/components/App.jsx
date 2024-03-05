@@ -9,44 +9,16 @@ import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { getTree } from '../services/ApiTestVmarmysh';
 import { Button, ButtonGroup, Typography } from '@mui/material';
 
-// const data1 = {
-//   id: 'root',
-//   name: 'Parent',
-//   children: [
-//     {
-//       id: '1',
-//       name: 'Child - 1',
-//     },
-//     {
-//       id: '3',
-//       name: 'Child - 3',
-//       children: [
-//         {
-//           id: '4',
-//           name: 'Child - 4',
-//         },
-//       ],
-//     },
-//   ],
-// };
-
-// getData();
-
-// console.log('object :>> ', getData());
-// console.log('object1 :>> ', data);
-
 export default function App() {
   const [items, setItems] = useState({});
 
   const getData = async () => {
     try {
       const data = await getTree('GUID');
-      // setItems({...data});
       setItems(prev => ({
         ...prev,
         ...data,
       }));
-      // console.log(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -62,7 +34,6 @@ export default function App() {
     <TreeItem
       key={nodes.id}
       nodeId={nodes.id?.toString()}
-      // label={nodes.name}
       label={
         <Box
           sx={{
@@ -83,13 +54,7 @@ export default function App() {
           </ButtonGroup>
         </Box>
       }
-      sx={{ fontSize: '2rem' }}
     >
-      {/* <ButtonGroup variant="contained" aria-label="Basic button group">
-          <Button>One</Button>
-          <Button>Two</Button>
-          <Button>Three</Button>
-        </ButtonGroup> */}
       {Array.isArray(nodes.children)
         ? nodes.children.map(node => renderTree(node))
         : null}
@@ -103,7 +68,6 @@ export default function App() {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpanded={[items.name]}
         defaultExpandIcon={<ChevronRightIcon />}
-        sx={{ fontSize: '2rem', flexDirection: 'row' }}
       >
         {renderTree(items)}
       </TreeView>
