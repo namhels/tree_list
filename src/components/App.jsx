@@ -5,10 +5,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import {  ButtonGroup, Typography } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+// import { AddCircleOutlineIcon, EditIcon, DeleteForeverIcon } from '@mui/icons-material';
+
 
 import { getTree } from '../services/ApiTestVmarmysh';
-import { Button, ButtonGroup, Typography } from '@mui/material';
-
 export default function App() {
   const [items, setItems] = useState({});
 
@@ -47,10 +51,10 @@ export default function App() {
           >
             {nodes.name}
           </Typography>
-          <ButtonGroup variant="contained" aria-label="Basic button group">
-            <Button>One</Button>
-            <Button>Two</Button>
-            <Button>Three</Button>
+          <ButtonGroup variant="text" aria-label="Basic button group">
+          <AddCircleOutlineIcon color="primary" fontSize="large" />
+          <EditIcon color="primary" fontSize="large" />
+          <DeleteForeverIcon color="error" fontSize="large" />
           </ButtonGroup>
         </Box>
       }
